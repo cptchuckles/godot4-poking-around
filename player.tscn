@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1e8tnp2oloec"]
+
+[ext_resource type="Script" path="res://FPSPlayer.cs" id="1_87qss"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hy3hg"]
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("_head")]
+input_ray_pickable = false
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+wall_min_slide_angle = 0.0
+floor_constant_speed = true
+script = ExtResource("1_87qss")
+_head = NodePath("Head")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_hy3hg")
+
+[node name="Head" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+current = true
+fov = 80.0
+
+[node name="InteractRay" type="RayCast3D" parent="Head"]
+target_position = Vector3(0, 0, -2)
+collision_mask = 2
+collide_with_areas = true
+debug_shape_thickness = 5
