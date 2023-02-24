@@ -18,6 +18,20 @@ public partial class FPSPlayer : CharacterBody3D
     {
         CalculateVelocity(delta);
         _ = MoveAndSlide();
+
+        for (int i = 0; i < GetSlideCollisionCount(); i++)
+        {
+            KinematicCollision3D collision = GetSlideCollision(i);
+
+            Vector3 normal = collision.GetNormal();
+            if (normal.IsEqualApprox(UpDirection))
+            {
+                continue;
+            }
+
+            GetNode<Hud>("HUD").AddMessage($"Collision normal: {normal}\n"
+                                           + $"Angle: {Mathf.RadToDeg(normal.AngleTo(UpDirection))}");
+        }
     }
 
     public override void _Process(double delta)

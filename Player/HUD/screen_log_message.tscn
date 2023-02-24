@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Player/HUD/ScreenLogMessage.cs" id="1_s56j6"]
+
+[node name="ScreenLogMessage" type="PanelContainer"]
+script = ExtResource("1_s56j6")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "some bullshit is afoot"
