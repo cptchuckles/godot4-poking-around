@@ -1,22 +1,23 @@
-using System;
 using Godot;
+using Godot.Collections;
 
 public partial class Hud : Control
 {
     [Export] private PackedScene _screenLogMessage;
+    [Export] private VBoxContainer _screenLog;
 
     public void AddMessage(string message)
     {
-        var screenLog = GetNode<VBoxContainer>("ScreenLog");
+        Array<Node> children = _screenLog.GetChildren();
 
-        if (screenLog.GetChildren().Count > 10)
+        if (children.Count > 10)
         {
-            for (int i = 0; i < screenLog.GetChildren().Count - 10; i++)
+            for (int i = 0; i < children.Count - 10; i++)
             {
-                screenLog.GetChild(i).QueueFree();
+                children[i].QueueFree();
             }
         }
 
-        screenLog.AddChild(_screenLogMessage.Instantiate<ScreenLogMessage>().WithText(message));
+        _screenLog.AddChild(_screenLogMessage.Instantiate<ScreenLogMessage>().WithText(message));
     }
 }

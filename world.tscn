@@ -1,7 +1,7 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=9 format=3 uid="uid://curtvqjcvmlq2"]
 
 [ext_resource type="Material" uid="uid://brn0nslcntxed" path="res://debug_grid.material" id="1_ulfjy"]
-[ext_resource type="PackedScene" path="res://Player/player.tscn" id="2_rvexi"]
+[ext_resource type="PackedScene" uid="uid://c7xbfshj8vkfi" path="res://Player/player.tscn" id="2_rvexi"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_k0brv"]
 rayleigh_coefficient = 0.68
