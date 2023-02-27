@@ -18,6 +18,9 @@ public partial class Hud : Control
             }
         }
 
-        _screenLog.AddChild(_screenLogMessage.Instantiate<ScreenLogMessage>().WithText(message));
+        _screenLog.AddChild(
+            _screenLogMessage.Instantiate<ScreenLogMessage>()
+                             .WithText(message)
+        );
     }
 }

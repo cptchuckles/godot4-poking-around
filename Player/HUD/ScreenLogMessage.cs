@@ -1,4 +1,3 @@
-using System;
 using Godot;
 
 public partial class ScreenLogMessage : PanelContainer
@@ -7,11 +6,6 @@ public partial class ScreenLogMessage : PanelContainer
 
     public double Lifetime { get; private set; } = 5d;
     public double FadeTime { get; private set; } = 1d;
-
-    public ScreenLogMessage()
-    {
-        _count++;
-    }
 
     public ScreenLogMessage WithText(string message)
     {
@@ -33,7 +27,7 @@ public partial class ScreenLogMessage : PanelContainer
 
     public override void _Ready()
     {
-        GetNode<Label>("%Count").Text = _count.ToString();
+        GetNode<Label>("%Count").Text = (++_count).ToString();
 
         GetTree().CreateTimer(Lifetime).Timeout += () =>
         {
