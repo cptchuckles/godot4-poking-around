@@ -1,3 +1,4 @@
+using System.Text;
 using Godot;
 
 namespace PokingAround;
@@ -14,29 +15,48 @@ public partial class FPSPlayer : CharacterBody3D
     // Get the gravity from the project settings to be synced with RigidBody nodes.
     private readonly float _gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
+    public override void _Process(double delta)
+    {
+        OrientateHead(delta);
+    }
+
     public override void _PhysicsProcess(double delta)
     {
         CalculateVelocity(delta);
-        _ = MoveAndSlide();
+        if (MoveAndSlide())
+        {
+            WriteLogMessages();
+        }
+    }
+
+    private void WriteLogMessages()
+    {
+        Hud hud = GetNode<Hud>("HUD");
+
+        if (hud is null)
+        {
+            return;
+        }
 
         for (int i = 0; i < GetSlideCollisionCount(); i++)
         {
             KinematicCollision3D collision = GetSlideCollision(i);
 
             Vector3 normal = collision.GetNormal();
+
             if (normal.IsEqualApprox(UpDirection))
             {
                 continue;
             }
 
-            GetNode<Hud>("HUD").AddMessage($"Collision normal: {normal}\n"
-                                           + $"Angle: {Mathf.RadToDeg(normal.AngleTo(UpDirection))}");
-        }
-    }
+            float angle = Mathf.RadToDeg(normal.AngleTo(UpDirection));
 
-    public override void _Process(double delta)
-    {
-        OrientateHead(delta);
+            StringBuilder message = new();
+            message.AppendLine($"Collision normal: {normal}");
+            message.AppendLine($"Angle: {angle}");
+
+            hud.AddMessage(message.ToString());
+        }
     }
 
     private void OrientateHead(double delta)
@@ -56,6 +76,8 @@ public partial class FPSPlayer : CharacterBody3D
             velocity.Y = _jumpVelocity;
         }
 
+        velocity.Y -= _gravity * (float)delta;
+
         Vector2 inputDir = Input.GetVector("left", "right", "forward", "back", _stickDeadzone);
         Vector3 direction = Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y);
         direction *= direction.Length();
@@ -66,13 +88,10 @@ public partial class FPSPlayer : CharacterBody3D
         }
         else
         {
-            velocity.X = Mathf.MoveToward(Velocity.X, 0, _speed);
-            velocity.Z = Mathf.MoveToward(Velocity.Z, 0, _speed);
+            velocity.X = Mathf.MoveToward(velocity.X, 0, _speed);
+            velocity.Z = Mathf.MoveToward(velocity.Z, 0, _speed);
         }
 
-        Velocity = velocity with
-        {
-            Y = velocity.Y - (_gravity * (float)delta),
-        };
+        Velocity = velocity;
     }
 }
