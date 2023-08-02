@@ -20,6 +20,20 @@ public partial class FPSPlayer : CharacterBody3D
         OrientateHead(delta);
     }
 
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        if (@event.IsActionPressed("screenshot"))
+        {
+            string path = "user://screenshot.png";
+            GD.Print($"Saving screenshot to {path}");
+            Error err = GetViewport().GetTexture().GetImage().SavePng(path);
+            if (err != Error.Ok)
+            {
+                GD.Print($"Couldn't save screenshot: error {err}");
+            }
+        }
+    }
+
     public override void _PhysicsProcess(double delta)
     {
         CalculateVelocity(delta);
