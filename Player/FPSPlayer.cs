@@ -79,8 +79,8 @@ public partial class FPSPlayer : CharacterBody3D
             float angle = Mathf.RadToDeg(normal.AngleTo(UpDirection));
 
             StringBuilder message = new();
-            message.AppendLine($"Collision normal: {normal}");
-            message.AppendLine($"Angle: {angle}");
+            message.AppendLine($"Collision normal: {normal}")
+                   .AppendLine($"Angle: {angle}");
 
             hud.AddMessage(message.ToString());
         }
