@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://curtvqjcvmlq2"]
+[gd_scene load_steps=12 format=3 uid="uid://curtvqjcvmlq2"]
 
 [ext_resource type="Material" uid="uid://brn0nslcntxed" path="res://debug_grid.material" id="1_ulfjy"]
 [ext_resource type="PackedScene" uid="uid://c7xbfshj8vkfi" path="res://Player/player.tscn" id="2_rvexi"]
@@ -29,6 +29,13 @@ glow_blend_mode = 1
 [sub_resource type="BoxShape3D" id="BoxShape3D_k2vkr"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_hcrv1"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_fb2ll"]
+bounce = 0.62
+
+[sub_resource type="SphereMesh" id="SphereMesh_6rldn"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_bexdp"]
 
 [node name="World" type="Node3D"]
 
@@ -66,3 +73,19 @@ mesh = SubResource("BoxMesh_hcrv1")
 
 [node name="Player" parent="." instance=ExtResource("2_rvexi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.75, 6.5)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 1.43761, 0.139895, 2.34676)
+material_override = ExtResource("1_ulfjy")
+use_collision = true
+size = Vector3(2.72569, 3.12195, 3.10163)
+
+[node name="BeachBall" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.94982, 11.8638, 2.61071)
+physics_material_override = SubResource("PhysicsMaterial_fb2ll")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BeachBall"]
+mesh = SubResource("SphereMesh_6rldn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BeachBall"]
+shape = SubResource("SphereShape3D_bexdp")
