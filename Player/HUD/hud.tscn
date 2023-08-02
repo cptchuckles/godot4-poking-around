@@ -11,7 +11,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ol4sa")
-_screenLogMessage = ExtResource("2_26a1w")
+_screenLogMessageScene = ExtResource("2_26a1w")
 _screenLog = NodePath("ScreenLog")
 
 [node name="ScreenLog" type="VBoxContainer" parent="."]
