@@ -40,6 +40,19 @@ public partial class FPSPlayer : CharacterBody3D
         if (MoveAndSlide())
         {
             WriteLogMessages();
+            MoveRigidBodies();
+        }
+    }
+
+    private void MoveRigidBodies()
+    {
+        for (int i = 0; i < GetSlideCollisionCount(); i++)
+        {
+            KinematicCollision3D collision = GetSlideCollision(i);
+            if (collision.GetCollider() is RigidBody3D rb)
+            {
+                rb.ApplyCentralImpulse(-collision.GetNormal());
+            }
         }
     }
 
