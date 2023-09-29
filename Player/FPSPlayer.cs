@@ -40,7 +40,7 @@ public partial class FPSPlayer : CharacterBody3D
         if (MoveAndSlide())
         {
             WriteLogMessages();
-            MoveRigidBodies();
+            // MoveRigidBodies();
         }
     }
 
