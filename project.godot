@@ -77,6 +77,10 @@ screenshot={
 ]
 }
 
+[physics]
+
+3d/physics_engine="JoltPhysics3D"
+
 [rendering]
 
 anti_aliasing/quality/use_taa=true
