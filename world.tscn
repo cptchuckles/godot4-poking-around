@@ -73,6 +73,7 @@ mesh = SubResource("BoxMesh_hcrv1")
 
 [node name="Player" parent="." instance=ExtResource("2_rvexi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.75, 6.5)
+_moveRigidBodies = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 1.43761, 0.139895, 2.34676)

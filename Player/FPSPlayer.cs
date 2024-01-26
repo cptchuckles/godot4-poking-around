@@ -5,6 +5,7 @@ namespace PokingAround;
 
 public partial class FPSPlayer : CharacterBody3D
 {
+    [Export] private bool _moveRigidBodies = false;
     [Export] private float _stickDeadzone = 0.2f;
     [Export] private float _speed = 10.0f;
     [Export] private float _turnSpeed = 3f * Mathf.Pi;
@@ -14,6 +15,12 @@ public partial class FPSPlayer : CharacterBody3D
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
     private readonly float _gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+
+    public override void _Ready()
+    {
+        ConcavePolygonShape3D thing = new();
+        GD.Print(thing.Get("faces"));
+    }
 
     public override void _Process(double delta)
     {
@@ -40,12 +47,17 @@ public partial class FPSPlayer : CharacterBody3D
         if (MoveAndSlide())
         {
             WriteLogMessages();
-            // MoveRigidBodies();
+            MoveRigidBodies();
         }
     }
 
     private void MoveRigidBodies()
     {
+        if (!_moveRigidBodies)
+        {
+            return;
+        }
+
         for (int i = 0; i < GetSlideCollisionCount(); i++)
         {
             KinematicCollision3D collision = GetSlideCollision(i);
