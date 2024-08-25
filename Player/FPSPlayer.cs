@@ -10,6 +10,10 @@ public partial class FPSPlayer : CharacterBody3D
     [Export] private float _turnSpeed = 3f * Mathf.Pi;
     [Export] private float _jumpVelocity = 4.5f;
 
+    [Export] private float _mouseSensitivity = 0.2f;
+    private bool _mouseDirty;
+    private Vector2 _mouseMotion;
+
     [Export] private Marker3D _head;
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -17,6 +21,7 @@ public partial class FPSPlayer : CharacterBody3D
 
     public override void _Ready()
     {
+        Input.MouseMode = Input.MouseModeEnum.Captured;
         ConcavePolygonShape3D thing = new();
         GD.Print(thing.Get("faces"));
     }
@@ -37,6 +42,11 @@ public partial class FPSPlayer : CharacterBody3D
             {
                 GD.Print($"Couldn't save screenshot: error {err}");
             }
+        }
+        else if (@event is InputEventMouseMotion mouseMotionEvent)
+        {
+            _mouseDirty = true;
+            _mouseMotion = mouseMotionEvent.Relative * _mouseSensitivity;
         }
     }
 
@@ -95,10 +105,24 @@ public partial class FPSPlayer : CharacterBody3D
 
     private void OrientateHead(double delta)
     {
-        Vector2 stickInput = Input.GetVector("yaw_right", "yaw_left", "pitch_down", "pitch_up", _stickDeadzone);
-        stickInput *= stickInput.Length();  // Quadratic ramping
-        RotateY(stickInput.X * _turnSpeed * (float)delta);
-        _head.RotateX(stickInput.Y * _turnSpeed * (float)delta);
+        if (_mouseDirty)
+        {
+            _mouseDirty = false;
+            RotateY(-_mouseMotion.X * (float)delta);
+            _head.RotateX(-_mouseMotion.Y * (float)delta);
+        }
+        else
+        {
+            Vector2 stickInput = Input.GetVector("yaw_right", "yaw_left", "pitch_down", "pitch_up", _stickDeadzone);
+            stickInput *= stickInput.Length();  // Quadratic ramping
+            RotateY(stickInput.X * _turnSpeed * (float)delta);
+            _head.RotateX(stickInput.Y * _turnSpeed * (float)delta);
+        }
+
+        _head.Rotation = _head.Rotation with
+        {
+            X = Mathf.Clamp(_head.Rotation.X, -Mathf.Pi / 2, Mathf.Pi / 2)
+        };
     }
 
     private void CalculateVelocity(double delta)
