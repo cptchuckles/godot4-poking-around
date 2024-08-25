@@ -1,4 +1,3 @@
-using System.Text;
 using Godot;
 
 namespace PokingAround;
@@ -90,11 +89,7 @@ public partial class FPSPlayer : CharacterBody3D
 
             float angle = Mathf.RadToDeg(normal.AngleTo(UpDirection));
 
-            StringBuilder message = new();
-            message.AppendLine($"Collision normal: {normal}")
-                   .AppendLine($"Angle: {angle}");
-
-            hud.AddMessage(message.ToString());
+            hud.AddMessage($"Collision normal: {normal}\nAngle: {angle}");
         }
     }
 
